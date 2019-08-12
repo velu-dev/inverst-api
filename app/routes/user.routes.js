@@ -1,18 +1,24 @@
-module.exports = (app) => {
-    const users = require('../controllers/user.controller.js');
+const multer = require("multer");
+const upload = multer({ dest: "upload/" });
+const fs = require("fs");
+const type = upload.single("file");
 
-    // Create a new Note
-    app.post('/users', users.create);
+module.exports = function(app) {
+  const users = require("../controllers/user.controller.js");
 
-    // Retrieve all users
-    app.get('/users', users.findAll);
+  // Create a new user
+  app.post("/users", users.create);
 
-    // Retrieve a single Note with noteId
-    app.get('/users/:noteId', users.findOne);
+  // Retrieve all users
+  app.get("/users", users.findAll);
 
-    // Update a Note with noteId
-    app.put('/users/:noteId', users.update);
+  // Retrieve a single user with userId
+  app.get("/users/:userId", users.findOne);
 
-    // Delete a Note with noteId
-    app.delete('/users/:noteId', users.delete);
-}
+  // Update a user with userId
+  app.put("/users/:userId", users.update);
+
+  // Delete a user with userId
+  app.delete("/users/:userId", users.delete);
+  app.post("/upload_profile_pic",type,  users.upload_profile_pic);
+};
